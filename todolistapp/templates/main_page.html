@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="table">
+<table>
+    <tr>
+    <th>
+        Your notes:
+        {% if not filter %}
+        {% load static %}
+        <div class="buttons">
+        <form action="{% url 'note-adder' %}">
+                    <button class="buttonhover" type="submit">
+                        <img class="img" src="{% static 'todolistapp/plus.png' %}" style="width: 45px; height: 45px;">
+                    </button>
+                        </form>
+            </div>
+        {% endif %}
+    </th>
+        </tr>
+  {% load static %}
+     <label class="floatRight" for="navBtn"><img src="{% static 'todolistapp/filter.png' %}" class="filter"><span></span></label>
+        <span class="floatRight paddingRight2rem">
+
+        </span>
+    <div class="container">
+        <input type="checkbox" class="navBtn" id="navBtn" />
+        <nav>
+            <ul>
+                <li>
+                    <form action="{% url 'priority-filter' filter_type='lth' %}">
+                                  <button value="submit" style="">
+                                      Filter low to high priority
+                                  </button>
+                          </form>
+                </li>
+                <li>
+                    <form action="{% url 'priority-filter' filter_type='htl' %}">
+                                  <button value="submit">
+                                      Filter high to low priority
+                                  </button>
+                          </form>
+                </li>
+                <li>
+                    <form action="{% url 'priority-filter' filter_type='ho' %}">
+                                  <button value="submit">
+                                      Show high-priority notes only
+                                  </button>
+                          </form>
+                </li>
+                <li>
+                    <form action="{% url 'priority-filter' filter_type='mo' %}">
+                                  <button value="submit">
+                                      Show medium-priority notes only
+                                  </button>
+                          </form>
+                </li>
+                <li>
+                    <form action="{% url 'priority-filter' filter_type='lo' %}">
+                                  <button value="submit">
+                                      Show low-priority notes only
+                                  </button>
+                          </form>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    {% for _ in notes %}
+        {% for note in notes %}
+    {% if forloop.parentloop.counter == note.position %}
+    <tr>
+        <td>
+            {% if filter %}
+            {% if note.readiness == True %}
+                <div class="checkbox">
+                <form action="{% url 'checkbox' position=note.position filter=filter_type %}">
+                    <button type="submit" style="width: 60px; height: 60px;">
+                    <img class="img" src="{% static 'todolistapp/checked-checkbox.png' %}" style="width: 50px; height: 50px; border-radius: 15px;">
+                    </button>
+                </form>
+            </div>
+            {% else %}
+                <div class="checkbox">
+                <form action="{% url 'checkbox' position=note.position filter=filter_type %}">
+                    <button type="submit" style="width: 60px; height: 60px;">
+                    <img class="img" src="{% static 'todolistapp/empty-checkbox.png' %}" style="width: 50px; height: 50px; border-radius: 15px;">
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+            {% elif not filter %}
+            {% if note.readiness == True %}
+                <div class="checkbox">
+                <form action="{% url 'checkbox' position=note.position filter=None %}">
+                    <button type="submit" style="width: 60px; height: 60px;">
+                    <img class="img" src="{% static 'todolistapp/checked-checkbox.png' %}" style="width: 50px; height: 50px; border-radius: 15px;">
+                    </button>
+                </form>
+            </div>
+            {% else %}
+                <div class="checkbox">
+                <form action="{% url 'checkbox' position=note.position filter=None %}">
+                    <button type="submit" style="width: 60px; height: 60px;">
+                    <img class="img" src="{% static 'todolistapp/empty-checkbox.png' %}" style="width: 50px; height: 50px; border-radius: 15px;">
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+            {% endif %}
+            <div class="updown">
+                {% if not filter %}
+                {% load static %}
+            {% if not forloop.parentloop.first %}
+                <form action="{% url 'up-arrow' position=note.position %}">
+                <button class="buttonhover" type="submit">
+                <img class="img" src="{% static 'todolistapp/up_arrow.png' %}">
+                </button>
+                    </form>
+                {% endif %}
+                {% if not forloop.parentloop.last %}
+                <form action="{% url 'down-arrow' position=note.position %}">
+                <button class="buttonhover" type="submit">
+                    <img class="img" src="{% static 'todolistapp/down_arrow.png' %}">
+                </button>
+                    </form>
+                {% endif %}
+                {% endif %}
+            </div>
+                    {% if not form %}
+                    {% if note.readiness == True %}
+            <strike>{{ note.text }}</strike>
+                {% else %}
+                    {{ note.text }}
+                {% endif %}
+                    {% else %}
+                    {% if pos != note.position %}
+                    {% if note.readiness == True %}
+                    <strike>{{ note.text }}</strike>
+                        {% else %}
+                    {{ note.text }}
+                    {% endif %}
+                    {% else %}
+                        {% if not filter %}
+                    {% for field in form %}
+                        <div class="note">
+                    <form method="post" action="{% url 'note-updater' position=note.position %}">
+                        {{ field }}
+                        {% endfor %}
+                         <button class="buttonhover" type="submit" style="display: inline-block">
+                        <img class="img" src="{% static 'todolistapp/checkmark.png' %}">
+                         </button>
+                    </form>
+                        </div>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                <div class="buttons">
+                    {% if not filter %}
+                    {% if not form %}
+                    <form method="get" action="{% url 'note-updater' position=note.position %}">
+                    <button class="buttonhover" type="submit">
+                        <img class="img" src="{% static 'todolistapp/pencil.png' %}">
+                    </button>
+                        </form>
+                    {% endif %}
+                    <form action="{% url 'note-deleter' position=note.position %}">
+                    <button class="buttonhover" type="submit">
+                        <img class="img" src="{% static 'todolistapp/can.png' %}">
+                    </button>
+                    </form>
+                    {% endif %}
+                    <div class="dropdown">
+                    {% if note.priority == 'high' %}
+                    <div class="high-circle"></div>
+                    {% elif note.priority == 'medium' %}
+                     <div class="medium-circle"></div>
+                    {% else %}
+                    <div class="low-circle"></div>
+                    {% endif %}
+                        {% if filter %}
+                      <div class="dropdown-content">
+                          <form action="{% url 'set-priority' position=note.position priority='high' filter=filter_type %}">
+                                  <button value="submit" style="background-color: #FAACAC">
+                                      high
+                                  </button>
+                          </form>
+                          <form action="{% url 'set-priority' position=note.position priority='medium' filter=filter_type %}">
+                              <button value="submit" style="background-color: #FAE0AC;">
+                                  medium
+                              </button>
+                          </form>
+                          <form action="{% url 'set-priority' position=note.position priority='low' filter=filter_type %}">
+                              <button value="submit" style="background-color: #BAFAAC">
+                                  low
+                              </button>
+                          </form>
+                      </div>
+                        {% elif not filter %}
+                        <div class="dropdown-content">
+                          <form action="{% url 'set-priority' position=note.position priority='high' filter='None' %}">
+                                  <button value="submit" style="background-color: #FAACAC">
+                                      high
+                                  </button>
+                          </form>
+                          <form action="{% url 'set-priority' position=note.position priority='medium' filter='None' %}">
+                              <button value="submit" style="background-color: #FAE0AC;">
+                                  medium
+                              </button>
+                          </form>
+                          <form action="{% url 'set-priority' position=note.position priority='low' filter='None' %}">
+                              <button value="submit" style="background-color: #BAFAAC">
+                                  low
+                              </button>
+                          </form>
+                      </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+        </td>
+    </tr>
+    {% endif %}
+        {% endfor %}
+    {% endfor %}
+</table>
+</div>
+{% endblock %}

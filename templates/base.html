@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDoList</title>
+
+    <!--    main font-->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=B612:wght@700&family=Montserrat:ital,wght@1,700&display=swap"
+          rel="stylesheet">
+
+    <style>
+    p {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    }
+
+    body {
+        {% load static %}
+    background-image: url('{% static 'todolistapp/background.jpg' %}');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+    .main {
+    font-family: 'Montserrat', sans-serif;
+    position: fixed;
+    top: 4px;
+    left: 30px;
+    font-size: 50px;
+    padding: 0px;
+    color: white;
+    text-decoration: none;
+    }
+    .main:hover {
+    color: grey;
+    }
+
+    .footer {
+    font-family: 'Montserrat', sans-serif;
+    position: fixed;
+    color: grey;
+    bottom: 10px;
+    left: 15px;
+    font-size: 15px;
+    text-decoration: none;
+    }
+    .text-white {
+    color: white;
+    text-decoration: none;
+    }
+
+    .LI {
+    font-family: 'Montserrat', sans-serif;
+    position: fixed;
+    color: white;
+    bottom: 10px;
+    right: 130px;
+    font-size: 25px;
+    text-decoration: none;
+    }
+    .LI:hover {
+    color: grey;
+    }
+
+    .GH {
+    font-family: 'Montserrat', sans-serif;
+    position: fixed;
+    color: white;
+    bottom: 10px;
+    right: 30px;
+    font-size: 25px;
+    text-decoration: none;
+    }
+    .GH:hover {
+    color: grey;
+    }
+
+    th {
+    font-family: 'Montserrat', sans-serif;
+    height: 70px;
+    border: 1px solid white;
+    border-color: green;
+    background-color: grey;
+    text-align: center;
+    font-size: 40px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    }
+
+    td {
+    height: 70px;
+    background-color: rgba(255,255,255,0.8);
+    font-family: 'Montserrat', sans-serif;
+    border: 2px solid white;
+    border-color: green;
+    font-size: 40px;
+    border-radius: 15px;
+    text-align: center;
+    }
+
+    table {
+    font-family: 'Montserrat', sans-serif;
+    border-collapse: separate;
+    min-width: 890px;
+    margin-left: auto;
+    margin-right: auto;
+    }
+
+    .buttons {
+    float: right;
+    border: 1px;
+    border-color: rgba(255,0,0,0.8);
+    display: inline-flex;
+    }
+
+    .buttonhover:hover {
+     border-radius: 15px;
+     background-color: rgba(200,200,200,0.8);
+     }
+
+    .buttonhover:active {
+     background-color: rgba(120,120,120,0.8);
+     }
+
+    .buttonhover:focus {
+     outline: none;
+     }
+
+    button {
+    display: inline-flex;
+    border: 1px;
+    border-color: rgba(255,255,255,0.8);
+    background: transparent;
+    display: block;
+    margin: 0 auto;
+    }
+
+    button:focus {
+    outline: none;
+     }
+
+    .img {
+    width: 30px;
+    height: 30px;
+    }
+
+    .note {
+    display: inline-block;
+    align-items: center;
+    }
+
+    .updown {
+    float: left;
+    margin: 0;
+    display: block;
+    }
+
+    .form {
+    autofocus;
+    font-family: 'Montserrat', sans-serif;
+    border: none;
+    input-border: none;
+    font-size: 40px;
+    display: inline-block;
+    align-items: center;
+    }
+
+    input {
+    background: transparent;
+    text-align: center;
+    height: 50px;
+    width: 600px;
+    border: none;
+    }
+
+    input:hover {
+    background: transparent;
+    }
+
+    input:active {
+    outline: none;
+    border: none;
+    }
+
+    input:focus {
+    text-align: center;
+    outline: none;
+    border: none;
+    }
+
+    /* hover dropdown */
+
+
+    .dropdown {
+    position: relative;
+    float: center;
+    border: 1px;
+    display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: transparent;
+      min-width: 70px;
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content button {
+    font-family: 'Montserrat', sans-serif;
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      border: 1px;
+      min-width: 105px;
+      border-radius: 15px;
+    }
+
+    .dropdown-content a:hover {background-color: #ddd;}
+    .dropdown:hover .dropdown-content {display: block;}
+    .dropdown:hover .dropbtn {background-color: ;}
+    .dropdown-content:focus {
+    outline: none;
+    border: none;
+    }
+
+    /* circle */
+
+    .high-circle {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: 1px solid black;
+    background-color: #FAACAC;
+    float: left;
+    display: inline-flex;
+    }
+
+    .medium-circle {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: 1px solid black;
+    background-color: #FAE0AC;
+    float: left;
+    display: inline-flex;
+    }
+
+    .low-circle {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: 1px solid black;
+    background-color: #BAFAAC;
+    float: left;
+    display: inline-flex;
+    }
+
+    .checkbox {
+    display: block;
+    float: left;
+    margin: 0;
+    border: none;
+    }
+
+
+
+.cf:before,
+.cf:after {
+  content: " ";
+  display: table;
+}
+
+.cf:after {
+  clear: both;
+}
+
+.cf {
+  *zoom: 1;
+}
+
+
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 100%;
+  background-color: #f3f3f3;
+}
+
+
+.left {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.justify {
+  text-align: justify;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+a {
+  color: white;
+}
+
+
+i {
+  color: #d1d4d9;
+  margin: 100 1rem 0 0;
+}
+
+
+.container {
+  margin: 0 auto;
+  overflow: hidden;
+  display: inline-flex;
+}
+
+.floatLeft {
+  float: left;
+}
+
+.floatRight {
+  float: right;
+  margin-right: 450px;
+}
+
+.posAbs {
+  position: absolute;
+}
+
+.third {
+  width: 33.3333%;
+}
+
+.half {
+  width: 50%;
+}
+
+.twoThird {
+  width: 66.6666%;
+}
+
+.quarter {
+  width: 25%;
+}
+
+label {
+  cursor: pointer;
+  display: inline-flex;
+  height: 4rem;
+  width: 4rem;
+  position: absolute;
+  left: 74%;
+  top: 3%;
+  background: gray;
+  border-radius: 15px;
+}
+
+nav {
+  border-left: 1px solid #d1d4d9;
+  border-right: 1px solid #d1d4d9;
+  border-bottom: 1px solid #d1d4d9;
+  max-width: 300px;
+  min-width: 300px;
+  border: none;
+  background-color: transparent;
+  transform: translateX(-100%) scale(1, 0.1);
+  transform-origin: top right;
+  transition: all 0.3s ease-out;
+  position: absolute;
+  left: 74%;
+  top: 10%;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+nav ul li {
+  border-top: 1px solid #efefef;
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: all 0.6s ease-out;
+  background-color: white;
+}
+nav ul li button {
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.3s ease-out;
+  line-height: 1rem;
+  text-decoration: none;
+  color: #8a8d92;
+  font-size: 20px;
+  display: block;
+  padding: 1rem;
+  min-width: 300px;
+}
+nav ul li:first-child {
+  border-top: none;
+}
+nav ul li:hover button {
+  color: white;
+  background-color: #6d747e;
+  transition: all 0.3s ease-out;
+  min-width: 300px;
+}
+nav ul li:hover button i {
+  color: white;
+}
+
+.navBtn:checked ~ nav {
+  transform: translateX(0);
+  transition: all 0.3s ease-out;
+}
+
+.navBtn:checked ~ nav ul li {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.6s ease-out;
+}
+
+.navBtn {
+  display: none;
+}
+
+.filter {
+ width: 55px;
+ height: 55px;
+ margin: auto;
+ display: block;
+ opacity: 0.5;
+}
+
+.filter:hover {
+ opacity: 1;
+}
+
+.filter:active {
+ opacity: 1;
+}
+
+.filter:focus {
+ opacity: 1;
+}
+
+    </style>
+</head>
+
+<body>
+<a href="{% url 'main-page' %}" class="main">ToDoList</a>
+{% block content %}
+{% endblock %}
+    <div class="footer">
+            Created for
+        <a href="https://teachmeskills.by/" class="text-white">TeachMeSkills</a>, by
+        <a href="https://github.com/DimitryLazarev" class="text-white">DimitryLazarev</a>.
+    </div>
+    <a href="https://github.com/DimitryLazarev" class="GH">Github</a>
+    <a href="https://www.linkedin.com/in/dm1trylazarev/" class="LI">LinkedIn</a>
+</body>
+</html>
