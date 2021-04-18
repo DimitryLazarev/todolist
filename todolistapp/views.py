@@ -3,8 +3,6 @@ from django.shortcuts import render, redirect
 from todolistapp.forms import NoteForm
 from todolistapp.models import ToDoList, ToDoListFiltered
 
-DECODER = dict()
-
 
 def main_page(request):
     notes = ToDoList.objects.all()
